@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<title>Base58</title>
+<link rel="stylesheet" href="https://ipfs.io/ipfs/QmPEJx9Bur2NNDPtBNT5zQ6bBnCkgYtKeNBAWRXx4j5hf2/css/bootstrap.min.css">
+<style type="text/css">
+.fill {
+    width: 100%;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Base58</h1>
+
+<fieldset>
+    <input id="txtradio" type="radio" name="plainformat" value="txt" checked>
+    <label for="txtradio">Raw data (e.g. text)</label>
+    <input id="hexradio" type="radio" name="plainformat" value="hex">
+    <label for="hexradio">Hexadecimal</label>
+</fieldset>
+
+<div class="row">
+    <div class="col-md-6">
+        <textarea class="fill" id="plain" placeholder="Unencoded data..."></textarea>
+        <button id="encode">Encode &raquo;</button>
+    </div>
+    <div class="col-md-6">
+        <textarea class="fill" id="base58" placeholder="Base58 data..."></textarea>
+        <button id="decode">&laquo; Decode</button>
+    </div>
+</div>
+</div>
+<script src="https://ipfs.io/ipfs/QmVvNwVXecuvQtKxwPuL1L58UPh9EYDU5iQSLjeN3S2sto/jquery-3.2.1.min.js"></script>
+<script src="https://ipfs.io/ipfs/QmPEJx9Bur2NNDPtBNT5zQ6bBnCkgYtKeNBAWRXx4j5hf2/js/bootstrap.min.js"></script>
+<script src="jsbn.js"></script>
+<script src="jsbn2.js"></script>
+<script src="base58.js"></script>
+<script type="text/javascript">
+function to_hex(s) {
+    var r = '';
+    for (var i = 0; i < s.length; i++) {
+        var v;
+        if (s[i] < 0)
+            s[i] += 256;
+        v = s[i].toString(16);
+        if (v.length == 1)
+            v = '0' + v;
+        r += v;
+    }
+    return r;
+}
+function from_hex(s) {
+    var r = [];
+    // TODO: handle invalid input
+    for (var i = 0; i < s.length; i += 2)
+        r.push(parseInt(s.substr(i, 2), 16));
+    return r;
+}
+function hexformat() {
+    return $('#hexradio').prop('checked');
+}
+
+$('#encode').click(function() {
+    var plain = $('#plain').val();
+    if (hexformat())
+        plain = from_hex(plain);
+    else
+        plain = base58.byte_array(plain);
+    $('#base58').val(base58.encode(plain));
+});
+$('#decode').click(function() {
+    plain = base58.decode($('#base58').val());
+    if (hexformat())
+        plain = to_hex(plain);
+    else
+        plain = base58.string(plain);
+    $('#plain').val(plain);
+});
+</script>
+</body>
+</html>
