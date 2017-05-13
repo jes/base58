@@ -14,10 +14,10 @@
 <h1>Base58</h1>
 
 <fieldset>
-    <input id="txtradio" type="radio" name="plainformat" value="txt" checked>
-    <label for="txtradio">Raw data (e.g. text)</label>
-    <input id="hexradio" type="radio" name="plainformat" value="hex">
+    <input id="hexradio" type="radio" name="plainformat" value="hex" checked>
     <label for="hexradio">Hexadecimal</label>
+    <input id="txtradio" type="radio" name="plainformat" value="txt">
+    <label for="txtradio">Raw data (e.g. text)</label>
 </fieldset>
 
 <div class="row">
@@ -52,7 +52,6 @@ function to_hex(s) {
 }
 function from_hex(s) {
     var r = [];
-    // TODO: handle invalid input
     for (var i = 0; i < s.length; i += 2)
         r.push(parseInt(s.substr(i, 2), 16));
     return r;
@@ -61,20 +60,35 @@ function hexformat() {
     return $('#hexradio').prop('checked');
 }
 
+var hexalphabet = '0123456789abcdefABCDEF';
+function strip_invalid(id, alphabet) {
+    var s = $(id).val();
+    var r = '';
+    for (var i = 0; i < s.length; i++) {
+        if (alphabet.indexOf(s.charAt(i)) != -1)
+            r += s.charAt(i);
+    }
+    $(id).val(r);
+}
+
 $('#encode').click(function() {
-    var plain = $('#plain').val();
-    if (hexformat())
-        plain = from_hex(plain);
-    else
-        plain = base58.byte_array(plain);
+    var plain;
+    if (hexformat()) {
+        strip_invalid('#plain', hexalphabet);
+        plain = from_hex($('#plain').val());
+    } else {
+        plain = base58.byte_array($('#plain').val());
+    }
     $('#base58').val(base58.encode(plain));
 });
 $('#decode').click(function() {
+    strip_invalid('#base58', base58.alphabet);
     plain = base58.decode($('#base58').val());
-    if (hexformat())
+    if (hexformat()) {
         plain = to_hex(plain);
-    else
+    } else {
         plain = base58.string(plain);
+    }
     $('#plain').val(plain);
 });
 </script>

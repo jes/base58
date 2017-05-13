@@ -21,7 +21,13 @@ var base58 = {
 
     // take byte array as input, give string as output
     encode: function(plain) {
-        var x = new BigInteger(plain, 256);
+        // create a copy with an extra leading 0 byte so that BigInteger
+        // doesn't treat "plain" as a two's-complement value
+        var plain_with_leading_zero = plain.slice();
+        plain_with_leading_zero.unshift(0);
+        var x = new BigInteger(plain_with_leading_zero, 256);
+
+        console.log("x = " + x.toString());
 
         var answer = '';
 
@@ -29,6 +35,12 @@ var base58 = {
             var mod = new BigInteger();
             x.divRemTo(base58.bigRadix, x, mod);
             answer = base58.alphabet.charAt(Number(mod.toString())) + answer;
+        }
+
+        for (var i = 0; i < plain.length; i++) {
+            if (plain[i] != 0)
+                break;
+            answer = base58.alphabet.charAt(0) + answer;
         }
 
         return answer;
@@ -54,15 +66,17 @@ var base58 = {
             j.dMultiply(base58.bigRadix);
         }
 
-        var numzeroes;
-        for (numzeroes = 0; numzeroes < encoded.length; numzeroes++) {
-            if (encoded.charAt(numzeroes) != base58.alphabet[0]) {
+        var ans = answer.toByteArray();
+        while (ans[0] == 0)
+            ans.shift();
+
+        for (var i = 0; i < encoded.length; i++) {
+            if (encoded.charAt(i) != base58.alphabet[0]) {
                 break;
             }
+            ans.unshift(0);
         }
 
-        // TODO: numzeroes
-
-        return answer.toByteArray();
+        return ans;
     },
 };
