@@ -27,8 +27,6 @@ var base58 = {
         plain_with_leading_zero.unshift(0);
         var x = new BigInteger(plain_with_leading_zero, 256);
 
-        console.log("x = " + x.toString());
-
         var answer = '';
 
         while (x.compareTo(BigInteger.ZERO) > 0) {
