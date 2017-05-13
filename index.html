@@ -3,15 +3,14 @@
 <head>
 <title>Base58</title>
 <link rel="stylesheet" href="https://ipfs.io/ipfs/QmPEJx9Bur2NNDPtBNT5zQ6bBnCkgYtKeNBAWRXx4j5hf2/css/bootstrap.min.css">
-<style type="text/css">
-.fill {
-    width: 100%;
-}
-</style>
 </head>
 <body>
 <div class="container">
 <h1>Base58</h1>
+
+<p>Base58 encoding is used to encode <a href="https://en.bitcoin.it/wiki/Address">Bitcoin addresses</a> and <a href="https://ipfs.io/">IPFS</a> content hashes, among other things.</p>
+
+<p>Use this tool to encode data in Base58, or to decode Base58 data.</p>
 
 <fieldset>
     <input id="hexradio" type="radio" name="plainformat" value="hex" checked>
@@ -22,14 +21,17 @@
 
 <div class="row">
     <div class="col-md-6">
-        <textarea class="fill" id="plain" placeholder="Unencoded data..."></textarea>
-        <button id="encode">Encode &raquo;</button>
+        <textarea class="form-control" id="plain" placeholder="Unencoded data..."></textarea>
+        <button class="btn btn-primary" id="encode">Encode &raquo;</button>
     </div>
     <div class="col-md-6">
-        <textarea class="fill" id="base58" placeholder="Base58 data..."></textarea>
-        <button id="decode">&laquo; Decode</button>
+        <textarea class="form-control" id="base58" placeholder="Base58 data..."></textarea>
+        <button class="btn btn-primary" id="decode">&laquo; Decode</button>
     </div>
 </div>
+
+<p><i>Base58 tool by <a href="http://incoherency.co.uk/">James Stanley</a>.</i></p>
+
 </div>
 <script src="https://ipfs.io/ipfs/QmVvNwVXecuvQtKxwPuL1L58UPh9EYDU5iQSLjeN3S2sto/jquery-3.2.1.min.js"></script>
 <script src="https://ipfs.io/ipfs/QmPEJx9Bur2NNDPtBNT5zQ6bBnCkgYtKeNBAWRXx4j5hf2/js/bootstrap.min.js"></script>
