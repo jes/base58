@@ -57,7 +57,7 @@ function from_hex(s) {
 
     // add a leading 0 if there are an odd number of nybbles (thanks Elias C)
     if (s.length % 2 != 0)
-        s = '0' + f;
+        s = '0' + s;
 
     for (var i = 0; i < s.length; i += 2)
         r.push(parseInt(s.substr(i, 2), 16));
